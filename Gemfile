@@ -37,6 +37,7 @@ gem 'cloudinary'
 gem 'carrierwave', '~> 1.2'
 gem 'pundit'
 ruby '2.4.4'
+gem 'rest-client'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

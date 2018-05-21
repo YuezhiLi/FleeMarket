@@ -226,6 +226,7 @@ DEPENDENCIES
   puma (~> 3.7)
   pundit
   rails (~> 5.1.6)
+  rest-client
   sass-rails (~> 5.0)
   selenium-webdriver
   simple_form
