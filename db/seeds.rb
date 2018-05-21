@@ -7,11 +7,12 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 puts "create 3 user..."
 3.times do
+  puts "------"
   User.create(
   nickName: Faker::Internet.user_name,
   city: ["Beijing", "Shanghai", "Chengdu"].sample,
   email: Faker::Internet.free_email,
-  phone_number: (13890775716..18983712027).to_a.sample
+  phone_number: Faker::PhoneNumber.cell_phone
   )
   puts "created a user!"
 end
