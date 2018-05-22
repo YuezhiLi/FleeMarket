@@ -17,7 +17,7 @@ class Api::V1::LoginController < Api::V1::BaseController
   def login
     @user = User.find_or_create_by(open_id: wechat_user.fetch("openid"))
     @user.authorization_token = SecureRandom.hex(16)
-    @uesr.save
+    @user.save
     @user.update(nickName: user_params["nickName"], city: user_params["city"], avatarUrl: user_params["avatarUrl"])
   end
 
