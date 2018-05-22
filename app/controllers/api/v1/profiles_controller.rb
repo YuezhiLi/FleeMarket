@@ -1,4 +1,4 @@
-class Api::V1::ProfileController < Api::V1::BaseController
+class Api::V1::ProfilesController < Api::V1::BaseController
   def show
     @user = current_user
   end
