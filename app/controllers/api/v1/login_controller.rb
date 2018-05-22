@@ -18,12 +18,12 @@ class Api::V1::LoginController < Api::V1::BaseController
     @user = User.find_or_create_by(open_id: wechat_user.fetch("openid"))
     # @user.authorization_token = SecureRandom.hex(16)
     # @uesr.save
-    @user.update(user_params)
+    @user.update(nickName: user_params["nickName"], city: user_params["city"], avatarUrl: user_params["avatarUrl"])
   end
 
   private
 
   def user_params
-    parameters.require(:userInfo).permit(:nickName, :city, :avatarUrl)
+    params.require(:userInfo).permit(:nickName, :city, :avatarUrl)
   end
 end
