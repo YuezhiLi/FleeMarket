@@ -19,6 +19,16 @@ class Api::V1::LoginController < Api::V1::BaseController
     @user.authorization_token = SecureRandom.hex(16)
     @user.save
     @user.update(nickName: user_params["nickName"], city: user_params["city"], avatarUrl: user_params["avatarUrl"])
+    render json: {
+      userId: @user.id,
+      authorizationToken: @user.authorization_token,
+      nickName: @user.nickName,
+      city: @user.city,
+      avatarUrl: @user.avatarUrl,
+      email: @user.email,
+      phoneNumber: @user.phone_number,
+      openId: @user.open_id
+      }
   end
 
   private
