@@ -2,10 +2,9 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       get '/:user_id/items', to: "items#index"
-      post '/login', to: "login#login"
       get 'my_items', to: 'items#my_items'
       get 'search/:keyword', to: 'items#search'
-      get 'my_profile', to: 'users#show'
+      resource :profile, only: [:create, :show, :update]
       resources :items, only: [:show, :create, :update, :destroy] do
         resources :connections, only: [:show, :create, :destroy]
       end
