@@ -6,4 +6,5 @@ json.profile do
   json.email @user.email
   json.phone_number @user.phone_number
   json.avatarUrl @user.avatarUrl
+  json.authorizationToken @user.authorization_token
 end
