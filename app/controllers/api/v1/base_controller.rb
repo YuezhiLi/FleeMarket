@@ -9,6 +9,7 @@ class Api::V1::BaseController < ActionController::Base
 
   def authenticate_with_token
     token = headers['X-fleaMarket-Token']
+    p headers
     @current_user = User.find_by_authorization_token(token)
   end
 
