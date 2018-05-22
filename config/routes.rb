@@ -4,6 +4,7 @@ Rails.application.routes.draw do
       get '/:user_id/items', to: "items#index"
       get 'my_items', to: 'items#my_items'
       get 'search/:keyword', to: 'items#search'
+      get '/login', to: "login#login"
       resource :profile, only: [:create, :show, :update]
       resources :items, only: [:show, :create, :update, :destroy] do
         resources :connections, only: [:show, :create, :destroy]
