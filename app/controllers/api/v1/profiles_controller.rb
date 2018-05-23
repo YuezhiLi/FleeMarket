@@ -7,7 +7,6 @@ class Api::V1::ProfilesController < Api::V1::BaseController
     @user = @current_user
     @user.update(user_params)
     # p user_params
-
   end
 
   private
