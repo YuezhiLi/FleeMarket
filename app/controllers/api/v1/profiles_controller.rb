@@ -6,7 +6,8 @@ class Api::V1::ProfilesController < Api::V1::BaseController
   def update
     @user = @current_user
     @user.update(user_params)
-    # p user_params
+    p user_params
+    render :show
   end
 
   private
