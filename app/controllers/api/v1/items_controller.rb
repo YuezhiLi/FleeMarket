@@ -19,6 +19,8 @@ class Api::V1::ItemsController < Api::V1::BaseController
       render :show
     else
       render_error
+      ends
+    end
   end
 
   def update
