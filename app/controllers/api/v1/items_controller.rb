@@ -16,7 +16,7 @@ class Api::V1::ItemsController < Api::V1::BaseController
     @item = Item.new(item_params)
     @item.user = @current_user
     if @item.save
-      render :my_items
+      render :show
     else
       render_error
   end
