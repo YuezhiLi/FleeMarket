@@ -1,4 +1,5 @@
 class Api::V1::LoginController < Api::V1::BaseController
+  skip_before_action :authenticate_with_token, only: [:login]
   URL = "https://api.weixin.qq.com/sns/jscode2session".freeze
   def wechat_params
    {
@@ -16,9 +17,24 @@ class Api::V1::LoginController < Api::V1::BaseController
 
   def login
     @user = User.find_or_create_by(open_id: wechat_user.fetch("openid"))
-    @user.update(params[:userInfo])
+    @user.authorization_token = SecureRandom.hex(16)
+    @user.save
+    @user.update(nickName: user_params["nickName"], city: user_params["city"], avatarUrl: user_params["avatarUrl"])
     render json: {
-      userId: @user.id
+      userId: @user.id,
+      authorizationToken: @user.authorization_token,
+      nickName: @user.nickName,
+      city: @user.city,
+      avatarUrl: @user.avatarUrl,
+      email: @user.email,
+      phoneNumber: @user.phone_number,
+      openId: @user.open_id
       }
+  end
+
+  private
+
+  def user_params
+    params.require("userInfo").permit("nickName", "city", "avatarUrl")
   end
 end
