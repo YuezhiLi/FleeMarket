@@ -11,6 +11,6 @@ class Api::V1::ProfilesController < Api::V1::BaseController
   private
 
   def user_params
-    params.require(:userInfo).permit(:nickName, :city, :avatarUrl, :email, :phone_number)
+    params.require(:userContact).permit(:nickName, :city, :avatarUrl, :email, :phone_number)
   end
 end
