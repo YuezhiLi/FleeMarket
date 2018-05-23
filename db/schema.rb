@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180523043622) do
+ActiveRecord::Schema.define(version: 20180523122359) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,8 @@ ActiveRecord::Schema.define(version: 20180523043622) do
     t.string "city"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "price"
+    t.boolean "must_pick_up"
     t.index ["user_id"], name: "index_items_on_user_id"
   end
 
@@ -54,6 +56,8 @@ ActiveRecord::Schema.define(version: 20180523043622) do
     t.datetime "updated_at", null: false
     t.string "open_id"
     t.string "authorization_token"
+    t.string "qr_code"
+    t.string "wechat_id"
   end
 
   add_foreign_key "connections", "items"
