@@ -4,7 +4,7 @@ json.profile do
   json.nickName @user.nickName
   json.city @user.city
   json.email @user.email
-  json.phoneNumber @user.phone_number
+  json.phoneNumber @user.phoneNumber
   json.avatarUrl @user.avatarUrl
   json.authorizationToken @user.authorization_token
 end

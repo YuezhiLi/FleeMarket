@@ -19,7 +19,7 @@ end
 puts "3 users created!"
 users = User.all
 users.each do |u|
-  puts "creating 2 times for #{u.nickName}..."
+  puts "creating 2 items for #{u.nickName}..."
   2.times do
     Item.create(
       user_id: u.id,

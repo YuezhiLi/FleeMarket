@@ -6,11 +6,13 @@ class Api::V1::ProfilesController < Api::V1::BaseController
   def update
     @user = @current_user
     @user.update(user_params)
+    p user_params
+    render :show
   end
 
   private
 
   def user_params
-    params.require(:userInfo).permit(:nickName, :city, :avatarUrl, :email, :phone_number)
+    params.require(:userContact).permit(:nickName, :city, :avatarUrl, :email, :phoneNumber)
   end
 end

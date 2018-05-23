@@ -9,8 +9,10 @@ class Api::V1::BaseController < ActionController::Base
 
   def authenticate_with_token
     token = request.headers['X-fleaMarket-Token']
-
     @current_user = User.find_by_authorization_token(token)
+    unless @current_user
+      raise ActiveRecord::RecordNotFound, 'bad X-fleaMarket-Token'
+    end
   end
 
   def not_found(exception)

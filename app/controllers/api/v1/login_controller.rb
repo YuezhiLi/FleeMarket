@@ -27,7 +27,7 @@ class Api::V1::LoginController < Api::V1::BaseController
       city: @user.city,
       avatarUrl: @user.avatarUrl,
       email: @user.email,
-      phoneNumber: @user.phone_number,
+      phoneNumber: @user.phoneNumber,
       openId: @user.open_id
       }
   end
