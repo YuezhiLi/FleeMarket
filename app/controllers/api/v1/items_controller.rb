@@ -18,6 +18,7 @@ class Api::V1::ItemsController < Api::V1::BaseController
     @item = Item.new(item_params)
     @item.user = @current_user
     if @item.save
+      # byebug
       render :show
     else
       render_error
@@ -58,6 +59,6 @@ class Api::V1::ItemsController < Api::V1::BaseController
   end
 
   def item_params
-    params.require(:item).permit(:title, :condition, :cover_image, :description, :city, :tag_list, :price, :must_pick_up)
+    params.require(:item).permit(:title, :condition, :cover_image, :description, :city, :price, :must_pick_up, :tag_list => [])
   end
 end
