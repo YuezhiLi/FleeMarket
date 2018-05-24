@@ -1,10 +1,12 @@
 class Api::V1::ItemsController < Api::V1::BaseController
+  before_action :set_item, only: [:show, :update, :destroy]
   def index
     items = Item.all
     @items = items.select { |i| i.user != @current_user }
   end
 
   def show
+    @related_items = @item.find_related_tags
   end
 
   def my_items
@@ -16,6 +18,7 @@ class Api::V1::ItemsController < Api::V1::BaseController
     @item = Item.new(item_params)
     @item.user = @current_user
     if @item.save
+      # byebug
       render :show
     else
       render_error
@@ -36,6 +39,14 @@ class Api::V1::ItemsController < Api::V1::BaseController
     head :no_content
   end
 
+  def tagged
+    if params[:tag].present?
+      @items = Item.tagged_with(params[:tag])
+    else
+      @items = Item.all
+    end
+  end
+
   private
 
   def set_item
@@ -48,6 +59,6 @@ class Api::V1::ItemsController < Api::V1::BaseController
   end
 
   def item_params
-    params.require(:item).permit(:title, :condition, :cover_image, :description, :city)
+    params.require(:item).permit(:title, :condition, :cover_image, :description, :city, :price, :must_pick_up, :tag_list => [])
   end
 end
