@@ -6,6 +6,7 @@ class Api::V1::ItemsController < Api::V1::BaseController
   end
 
   def show
+    @related_items = @item.find_related_tags
   end
 
   def my_items
@@ -37,6 +38,14 @@ class Api::V1::ItemsController < Api::V1::BaseController
     head :no_content
   end
 
+  def tagged
+    if params[:tag].present?
+      @items = Item.tagged_with(params[:tag])
+    else
+      @items = Item.all
+    end
+  end
+
   private
 
   def set_item
@@ -49,6 +58,6 @@ class Api::V1::ItemsController < Api::V1::BaseController
   end
 
   def item_params
-    params.require(:item).permit(:title, :condition, :cover_image, :description, :city)
+    params.require(:item).permit(:title, :condition, :cover_image, :description, :city, :tag_list, :price, :must_pick_up)
   end
 end
