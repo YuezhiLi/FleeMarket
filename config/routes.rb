@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       get 'search/:keyword', to: 'items#search'
       post '/login', to: "login#login"
       get '/tagged', to: 'items#tagged'
+      get '/users/:id', to: 'users#show'
       resource :profile, only: [:show, :update]
       resources :items, only: [:index, :show, :create, :update, :destroy] do
         resources :connections, only: [:show, :create, :destroy]
