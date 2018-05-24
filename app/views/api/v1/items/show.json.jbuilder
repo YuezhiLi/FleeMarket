@@ -9,6 +9,7 @@
     json.price @item.price
     json.tag_list @item.tag_list
     json.must_pick_up @item.must_pick_up
+    json.owner @item.user
 end
 
  json.related_items do
