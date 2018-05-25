@@ -10,11 +10,14 @@
     json.tag_list @item.tag_list
     json.must_pick_up @item.must_pick_up
     json.owner @item.user
+    json.items_from_the_same_owner @item.user.items
 end
 
  json.related_items do
   json.array! @related_items do |item|
     json.id item.id
     json.title item.title
+    json.price item.price
+    json.cover_image item.cover_image
   end
 end
