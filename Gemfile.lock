@@ -45,7 +45,6 @@ GEM
     arel (8.0.0)
     autoprefixer-rails (8.4.1)
       execjs
-    aws_cf_signer (0.1.3)
     bindex (0.5.0)
     bootstrap-sass (3.3.7)
       autoprefixer-rails (>= 5.2.1)
@@ -59,15 +58,8 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (>= 2.0, < 4.0)
-    carrierwave (1.2.2)
-      activemodel (>= 4.0.0)
-      activesupport (>= 4.0.0)
-      mime-types (>= 1.16)
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
-    cloudinary (1.9.1)
-      aws_cf_signer
-      rest-client
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0)
@@ -218,8 +210,6 @@ DEPENDENCIES
   bootstrap-sass
   byebug
   capybara (~> 2.13)
-  carrierwave (~> 1.2)
-  cloudinary
   coffee-rails (~> 4.2)
   faker
   figaro
@@ -241,7 +231,7 @@ DEPENDENCIES
   web-console (>= 3.3.0)
 
 RUBY VERSION
-   ruby 2.4.4p296
+   ruby 2.4.3p205
 
 BUNDLED WITH
    1.16.2
