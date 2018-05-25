@@ -9,6 +9,14 @@ class Api::V1::ItemsController < Api::V1::BaseController
     @related_items = @item.find_related_tags
   end
 
+  def search
+    @keyword = params[:keyword]
+    @items = []
+    Item.all.each do |item|
+      @items << item if item.title.downcase.include?(@keyword.downcase)
+    end
+  end
+
   def create
     @item = Item.new(item_params)
     @item.user = @current_user
