@@ -5,7 +5,7 @@ Rails.application.routes.draw do
       post '/login', to: "login#login"
       get '/tagged', to: 'items#tagged'
       get '/users/:id', to: 'users#show'
-      get '/items/:city', to: 'items#items_by_city'
+      get '/items_by_city', to: 'items#items_by_city'
       resource :profile, only: [:show, :update]
       resources :items, only: [:index, :show, :create, :update, :destroy] do
         resources :connections, only: [:show, :create, :destroy]

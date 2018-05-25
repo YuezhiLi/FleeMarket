@@ -1,4 +1,4 @@
-json items do
+json.items do
   json.array! @items do |item|
     json.id item.id
     json.user_id item.user_id
