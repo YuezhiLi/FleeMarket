@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
-      get 'my_items', to: 'items#my_items'
       get 'search/:keyword', to: 'items#search'
       post '/login', to: "login#login"
       get '/tagged', to: 'items#tagged'
