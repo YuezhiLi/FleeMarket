@@ -34,7 +34,7 @@ ruby '2.4.3'
 gem 'simple_form'
 gem 'bootstrap-sass'
 gem 'pundit'
-# ruby '2.4.4'
+ruby '2.4.4'
 gem 'rest-client'
 gem 'acts-as-taggable-on', '~> 5.0'
 
