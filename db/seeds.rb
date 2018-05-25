@@ -20,7 +20,7 @@ users.each do |u|
       city: u.city,
       price: (1..100).to_a.sample,
       must_pick_up: [true, false].sample,
-      remote_cover_image_url: "https://picsum.photos/400/400?image=#{(1..25).to_a.sample}",
+      cover_image: "https://picsum.photos/400/400?image=#{(1..25).to_a.sample}",
       tag_list: tags.sample(3)
       )
   end
