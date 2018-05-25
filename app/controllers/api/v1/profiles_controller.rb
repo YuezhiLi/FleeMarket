@@ -13,6 +13,6 @@ class Api::V1::ProfilesController < Api::V1::BaseController
   private
 
   def user_params
-    params.require(:userContact).permit(:nickName, :city, :avatarUrl, :email, :phoneNumber)
+    params.require(:userContact).permit(:nickName, :city, :avatarUrl, :email, :phoneNumber, :wechat_id, :qr_code)
   end
 end
