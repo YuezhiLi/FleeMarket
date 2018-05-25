@@ -9,4 +9,5 @@ json.profile do
   json.phoneNumber @user.phoneNumber
   json.avatarUrl @user.avatarUrl
   json.authorizationToken @user.authorization_token
+  json.my_items @user.items
 end
