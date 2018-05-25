@@ -43,7 +43,7 @@ class Api::V1::ItemsController < Api::V1::BaseController
   end
 
   def items_by_city
-    @items = Item.find_by_city(params[:city])
+    @items = Item.where(city: params[:city])
   end
 
   def tagged
