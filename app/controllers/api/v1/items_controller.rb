@@ -34,6 +34,10 @@ class Api::V1::ItemsController < Api::V1::BaseController
     head :no_content
   end
 
+  def items_by_city
+    @items = Item.find_by_city(params[:city])
+  end
+
   def tagged
     if params[:tag].present?
       @items = Item.tagged_with(params[:tag])
