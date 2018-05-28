@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
+      get 'sort/:method', to 'items#sort'
       get 'search/:keyword', to: 'items#search'
       post '/login', to: "login#login"
       get '/users/:id', to: 'users#show'

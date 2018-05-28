@@ -2,15 +2,16 @@ class Api::V1::ItemsController < Api::V1::BaseController
   before_action :set_item, only: [:show, :update, :destroy]
   def index
     items = Item.all
-    all_items = items.select { |i| i.user != @current_user }
-    if params[:city] != nil && params[:tag] != nil
-      @items = all_items.select { |i| i.tag_list.include?(params[:tag]) }.select { |i| i.city == params[:city] }
-    elsif params[:city] != nil && params[:tag].nil?
-      @items = all_items.select { |i| i.city == params[:city] }
-    elsif params[:city].nil? && params[:tag] != nil
-      @items = all_items.select { |i| i.tag_list.include?(params[:tag]) }
-    else
-      @items = all_items
+    @items = items.select { |i| i.user != @current_user }
+    @items = @items.select { |i| i.tag_list.include?(params[:tag]) }.select { |i| i.city == params[:city] } if params[:city] != nil && params[:tag] != nil
+    @items = @items.select { |i| i.city == params[:city] }  if params[:city] != nil && params[:tag].nil?
+    @items = @items.select { |i| i.tag_list.include?(params[:tag]) } if params[:city].nil? && params[:tag] != nil
+    if params[:keyword].nil? == false
+      item_temp = @items
+      @items = []
+      item_temp.each do |item|
+        @items << item if item.title.downcase.include?(@keyword.downcase)
+      end
     end
   end
 
@@ -34,10 +35,10 @@ class Api::V1::ItemsController < Api::V1::BaseController
   def search
     @keyword = params[:keyword]
     @items = []
-    Item.all.each do |item|
-      if  params[:tag].presents?
-        @items = Item.tagged_with(params[:tag])
-      else
+    if  params[:tag].presents?
+      @items << Item.tagged_with(params[:tag])
+    else
+      Item.all.each do |item|
         @items << item if item.title.downcase.include?(@keyword.downcase)
       end
     end
