@@ -3,6 +3,16 @@ class Api::V1::ItemsController < Api::V1::BaseController
   def index
     items = Item.all
     @items = items.select { |i| i.user != @current_user }
+    @items = @items.select { |i| i.tag_list.include?(params[:tag]) }.select { |i| i.city == params[:city] } if params[:city] != nil && params[:tag] != nil
+    @items = @items.select { |i| i.city == params[:city] }  if params[:city] != nil && params[:tag].nil?
+    @items = @items.select { |i| i.tag_list.include?(params[:tag]) } if params[:city].nil? && params[:tag] != nil
+    if params[:keyword].nil? == false
+      item_temp = @items
+      @items = []
+      item_temp.each do |item|
+        @items << item if item.title.downcase.include?(@keyword.downcase)
+      end
+    end
   end
 
   def show
@@ -25,10 +35,10 @@ class Api::V1::ItemsController < Api::V1::BaseController
   def search
     @keyword = params[:keyword]
     @items = []
-    Item.all.each do |item|
-      if  params[:tag].presents?
-        @items = Item.tagged_with(params[:tag])
-      else
+    if  params[:tag].presents?
+      @items << Item.tagged_with(params[:tag])
+    else
+      Item.all.each do |item|
         @items << item if item.title.downcase.include?(@keyword.downcase)
       end
     end
@@ -58,26 +68,6 @@ class Api::V1::ItemsController < Api::V1::BaseController
   def destroy
     @item.destroy
     head :no_content
-  end
-
-  def sort
-    @method = params[:method]
-    @items = Item.order(:price) if @method == 1
-    @items = Itme.order(price: :desc) if @method == 2
-    @items = Item.order(:updated_at) if @method == 3
-    @items = Item.order(updated_at: :desc) if @method == 4
-  end
-
-  def items_by_city
-    @items = Item.where(city: params[:city])
-  end
-
-  def tagged
-    if params[:tag].present?
-      @items = Item.tagged_with(params[:tag])
-    else
-      @items = Item.all
-    end
   end
 
   private
