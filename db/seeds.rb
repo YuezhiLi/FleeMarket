@@ -5,30 +5,24 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-puts "create 3 user..."
-3.times do
-  puts "------"
-  User.create(
-  nickName: Faker::Internet.user_name,
-  city: ["Beijing", "Shanghai", "Chengdu"].sample,
-  email: Faker::Internet.free_email,
-  phone_number: Faker::PhoneNumber.cell_phone
-  )
-  puts "created a user!"
-end
-puts "3 users created!"
+
 users = User.all
+Item.destroy_all
 users.each do |u|
   puts "creating 2 items for #{u.nickName}..."
-  2.times do
+  tags = ["kitchen", "wood", "glassware", "bedding", "clothing", "modern", "vintage", "minimalism", "furniture"]
+  3.times do
     Item.create(
       user_id: u.id,
       title: Faker::HitchhikersGuideToTheGalaxy.starship,
       condition: ["brandnew", "like new", "somewhat used", "used", "very used"].sample,
       description: Faker::HitchhikersGuideToTheGalaxy.quote,
-      remote_cover_image_url: "https://picsum.photos/400/400?image=#{(1..10).to_a.sample}",
-      city: u.city
+      city: u.city,
+      price: (1..100).to_a.sample,
+      must_pick_up: [true, false].sample,
+      cover_image: "https://picsum.photos/400/400?image=#{(1..25).to_a.sample}",
+      tag_list: tags.sample(3)
       )
   end
-  puts "2 times created for #{u.nickName}!"
+  puts "3 items created for #{u.nickName}!"
 end

@@ -1,10 +1,12 @@
 class Api::V1::ItemsController < Api::V1::BaseController
+  before_action :set_item, only: [:show, :update, :destroy]
   def index
     items = Item.all
     @items = items.select { |i| i.user != @current_user }
   end
 
   def show
+    @related_items = @item.find_related_tags
   end
 
   def detail_image
@@ -20,14 +22,29 @@ class Api::V1::ItemsController < Api::V1::BaseController
     @items = items.select { |i| i.user == @current_user}
   end
 
+  def search
+    @keyword = params[:keyword]
+    @items = []
+    Item.all.each do |item|
+      if  params[:tag].presents?
+        @items = Item.tagged_with(params[:tag])
+      else
+        @items << item if item.title.downcase.include?(@keyword.downcase)
+      end
+    end
+  end
+
   def create
     @item = Item.new(item_params)
     @item.user = @current_user
     detail_image
     if @item.save
+      # byebug
       render :show
     else
       render_error
+      ends
+    end
   end
 
   def update
@@ -43,6 +60,18 @@ class Api::V1::ItemsController < Api::V1::BaseController
     head :no_content
   end
 
+  def items_by_city
+    @items = Item.where(city: params[:city])
+  end
+
+  def tagged
+    if params[:tag].present?
+      @items = Item.tagged_with(params[:tag])
+    else
+      @items = Item.all
+    end
+  end
+
   private
 
   def set_item
@@ -55,7 +84,7 @@ class Api::V1::ItemsController < Api::V1::BaseController
   end
 
   def item_params
-    params.require(:item).permit(:title, :condition, :cover_image, :description, :city)
+    params.require(:item).permit(:title, :condition, :cover_image, :description, :city, :price, :must_pick_up, :tag_list => [])
   end
 
   def image_url
