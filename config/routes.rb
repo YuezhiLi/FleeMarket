@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       post '/login', to: "login#login"
       get '/users/:id', to: 'users#show'
       resource :profile, only: [:show, :update]
+      resources :detail_images, only: [:create, :destroy]
       resources :items, only: [:index, :show, :create, :update, :destroy] do
         resources :connections, only: [:show, :create, :destroy]
       end
