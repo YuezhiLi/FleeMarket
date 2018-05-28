@@ -4,6 +4,7 @@
     json.title @item.title
     json.condition @item.condition
     json.cover_image @item.cover_image
+    json.detail_images @item.detail_images
     json.description @item.description
     json.city @item.city
     json.price @item.price
