@@ -60,6 +60,14 @@ class Api::V1::ItemsController < Api::V1::BaseController
     head :no_content
   end
 
+  def sort
+    @method = params[:method]
+    @items = Item.order(:price) if @method == 1
+    @items = Itme.order(price: :desc) if @method == 2
+    @items = Item.order(:updated_at) if @method == 3
+    @items = Item.order(updated_at: :desc) if @method == 4
+  end
+
   def items_by_city
     @items = Item.where(city: params[:city])
   end
