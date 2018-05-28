@@ -2,7 +2,16 @@ class Api::V1::ItemsController < Api::V1::BaseController
   before_action :set_item, only: [:show, :update, :destroy]
   def index
     items = Item.all
-    @items = items.select { |i| i.user != @current_user }
+    all_items = items.select { |i| i.user != @current_user }
+    if params[:city] != nil && params[:tag] != nil
+      @items = all_items.select { |i| i.tag_list.include?(params[:tag]) }.select { |i| i.city == params[:city] }
+    elsif params[:city] != nil && params[:tag].nil?
+      @items = all_items.select { |i| i.city == params[:city] }
+    elsif params[:city].nil? && params[:tag] != nil
+      @items = all_items.select { |i| i.tag_list.include?(params[:tag]) }
+    else
+      @items = all_items
+    end
   end
 
   def show
@@ -40,18 +49,6 @@ class Api::V1::ItemsController < Api::V1::BaseController
   def destroy
     @item.destroy
     head :no_content
-  end
-
-  def items_by_city
-    @items = Item.where(city: params[:city])
-  end
-
-  def tagged
-    if params[:tag].present?
-      @items = Item.tagged_with(params[:tag])
-    else
-      @items = Item.all
-    end
   end
 
   private
