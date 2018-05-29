@@ -5,3 +5,6 @@ json.messages do
     json.sender m.user
   end
 end
+json.interlocutor do
+  json.id @interlocutor.id
+end
