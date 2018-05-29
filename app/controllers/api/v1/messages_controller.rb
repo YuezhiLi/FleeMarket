@@ -23,6 +23,7 @@ class Api::V1::MessagesController < Api::V1::BaseController
   def conversation
     @user = @current_user
     @messages = []
+    @interlocutor = User.find(params[:user_id])
     @messages += @user.sent_messages.select{ |m| m.inbox.user_id == params[:user_id].to_i }
     @messages += @user.received_messages.select { |m| m.user_id == params[:user_id].to_i }
     @messages.sort_by! { |m| m.created_at }
