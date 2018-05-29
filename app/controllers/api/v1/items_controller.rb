@@ -24,10 +24,6 @@ class Api::V1::ItemsController < Api::V1::BaseController
     @related_items = @item.find_related_tags
   end
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 1c067db6297fed1e0dabd87dd0a2a808f2dcbbba
   def my_items
     items = Item.all
     @items = items.select { |i| i.user == @current_user}
