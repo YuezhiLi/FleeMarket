@@ -9,6 +9,10 @@ class Api::V1::DetailImagesController < Api::V1::BaseController
     }
   end
 
+  def show
+    @detail_image = DetailImage.find(params[:id])
+  end
+
   def destroy
     @detail_image = DetailImage.find(params[:id])
     @detail_image.destroy
