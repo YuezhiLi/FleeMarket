@@ -15,6 +15,10 @@ class Api::V1::ItemsController < Api::V1::BaseController
         @items << item if item.title.downcase.include?(params[:keyword].downcase)
       end
     end
+    @items = @items.order(:price) if params[:method] == 1
+    @items = @items.order(price: :desc) if params[:method] == 2
+    @items = @items.order(:updated_at) if params[:method] == 3
+    @items = @items.order(updated_at: :desc) if params[:method] == 4
   end
 
   def show
