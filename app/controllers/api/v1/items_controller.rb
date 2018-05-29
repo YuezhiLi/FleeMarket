@@ -3,15 +3,14 @@ class Api::V1::ItemsController < Api::V1::BaseController
   def index
     items = Item.all
     @items = items.select { |i| i.user != @current_user }
-    @items = @items.select { |i| i.tag_list.include?(params[:tag]) }.select { |i| i.city == params[:city] } if params[:city] != nil && params[:tag] != nil
-    @items = @items.select { |i| i.city == params[:city] }  if params[:city] != nil && params[:tag].nil?
-    @items = @items.select { |i| i.tag_list.include?(params[:tag]) } if params[:city].nil? && params[:tag] != nil
-    if params[:keyword].nil? == false
-      item_temp = @items
+    @items = @items.select { |i| i.city == params[:city] }  if params[:city].present?
+    @items = @items.select { |i| i.tag_list.include?(params[:tag]) } if params[:tag].present?
+    if params[:keyword].present?
+      items_temp = @items
       @items = []
-      @items << item_temp.tagged_with(params[:keyword])
-      item_temp -= @items
-      item_temp.each do |item|
+      @items += items_temp.select { |i| i.tag_list.include?(params[:keyword]) }
+      items_temp -= @items
+      items_temp.each do |item|
         @items << item if item.title.downcase.include?(params[:keyword].downcase)
       end
     end
