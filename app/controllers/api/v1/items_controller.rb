@@ -9,8 +9,10 @@ class Api::V1::ItemsController < Api::V1::BaseController
     if params[:keyword].nil? == false
       item_temp = @items
       @items = []
+      @items << item_temp.tagged_with(params[:keyword])
+      item_temp -= @items
       item_temp.each do |item|
-        @items << item if item.title.downcase.include?(@keyword.downcase)
+        @items << item if item.title.downcase.include?(params[:keyword].downcase)
       end
     end
   end
@@ -32,17 +34,17 @@ class Api::V1::ItemsController < Api::V1::BaseController
     @items = items.select { |i| i.user == @current_user}
   end
 
-  def search
-    @keyword = params[:keyword]
-    @items = []
-    if  params[:tag].presents?
-      @items << Item.tagged_with(params[:tag])
-    else
-      Item.all.each do |item|
-        @items << item if item.title.downcase.include?(@keyword.downcase)
-      end
-    end
-  end
+  # def search
+  #   @keyword = params[:keyword]
+  #   @items = []
+  #   if  params[:tag].presents?
+  #     @items << Item.tagged_with(params[:tag])
+  #   else
+  #     Item.all.each do |item|
+  #       @items << item if item.title.downcase.include?(@keyword.downcase)
+  #     end
+  #   end
+  # end
 
   def create
     @item = Item.new(item_params)
