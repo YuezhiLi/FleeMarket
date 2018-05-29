@@ -10,5 +10,6 @@ json.items do
     json.tag_list item.tag_list
     json.price item.price
     json.must_pick_up item.must_pick_up
+    json.updated_at item.updated_at
   end
 end

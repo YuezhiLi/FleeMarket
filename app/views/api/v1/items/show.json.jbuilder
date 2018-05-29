@@ -12,6 +12,7 @@
     json.must_pick_up @item.must_pick_up
     json.owner @item.user
     json.items_from_the_same_owner @item.user.items
+    json.updated_at @item.updated_at
 end
 
  json.related_items do
