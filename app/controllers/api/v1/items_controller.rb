@@ -32,9 +32,7 @@ class Api::V1::ItemsController < Api::V1::BaseController
   def create
     @item = Item.new(item_params)
     @item.user = @current_user
-    detail_image
     if @item.save
-      # byebug
       render :show
     else
       render_error
