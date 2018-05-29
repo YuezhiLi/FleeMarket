@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180525065141) do
+ActiveRecord::Schema.define(version: 20180529071926) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,13 @@ ActiveRecord::Schema.define(version: 20180525065141) do
     t.index ["item_id"], name: "index_detail_images_on_item_id"
   end
 
+  create_table "inboxes", force: :cascade do |t|
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_inboxes_on_user_id"
+  end
+
   create_table "items", force: :cascade do |t|
     t.bigint "user_id"
     t.string "title"
@@ -44,6 +51,16 @@ ActiveRecord::Schema.define(version: 20180525065141) do
     t.float "price"
     t.boolean "must_pick_up"
     t.index ["user_id"], name: "index_items_on_user_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.text "content"
+    t.bigint "user_id"
+    t.bigint "inbox_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["inbox_id"], name: "index_messages_on_inbox_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "taggings", force: :cascade do |t|
@@ -90,5 +107,8 @@ ActiveRecord::Schema.define(version: 20180525065141) do
   add_foreign_key "connections", "items"
   add_foreign_key "connections", "users"
   add_foreign_key "detail_images", "items"
+  add_foreign_key "inboxes", "users"
   add_foreign_key "items", "users"
+  add_foreign_key "messages", "inboxes"
+  add_foreign_key "messages", "users"
 end
