@@ -25,7 +25,7 @@ class Api::V1::MessagesController < Api::V1::BaseController
     @messages = []
     @messages += @user.sent_messages.select{ |m| m.inbox.user_id == params[:user_id].to_i }
     @messages += @user.received_messages.select { |m| m.user_id == params[:user_id].to_i }
-    @messages.sort_by! { |m| m.created_at }.reverse!
+    @messages.sort_by! { |m| m.created_at }
   end
 
   private
