@@ -21,5 +21,6 @@ end
     json.title item.title
     json.price item.price
     json.cover_image item.cover_image
+    json.updated_at item.updated_at
   end
 end
