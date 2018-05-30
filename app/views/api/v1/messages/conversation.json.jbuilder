@@ -7,6 +7,7 @@ json.messages do
 end
 json.interlocutor do
   json.id @interlocutor.id
+  json.nickName @interlocutor.nickName
 end
 json.item do
   json.id @item.id
