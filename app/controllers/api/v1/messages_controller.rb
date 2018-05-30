@@ -17,7 +17,7 @@ class Api::V1::MessagesController < Api::V1::BaseController
     items.each do |item|
       interlocutors.each do |interlocutor|
         @messages = messages.select { |m| m.item == item && m.user == interlocutor } + messages.select { |m| m.item == item && m.inbox.user == interlocutor }
-        conversation = { item: item, interlocutor: interlocutor } unless @messages == []
+        conversation = { item: item, interlocutor: interlocutor, last_message: @messages.first } unless @messages == []
         @conversations << conversation unless conversation.nil?
       end
     end
