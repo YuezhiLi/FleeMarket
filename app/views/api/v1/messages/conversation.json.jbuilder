@@ -8,3 +8,11 @@ end
 json.interlocutor do
   json.id @interlocutor.id
 end
+json.item do
+  json.id @item.id
+  json.title @item.title
+  json.owner_id @item.user.id
+  json.owner @item.user.nickName
+  json.owner_avatar @item.user.avatarUrl
+  json.cover_image @item.cover_image
+end
