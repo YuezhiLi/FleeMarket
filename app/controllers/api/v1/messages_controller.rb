@@ -17,7 +17,7 @@ class Api::V1::MessagesController < Api::V1::BaseController
     items.each do |item|
       interlocutors.each do |interlocutor|
         @messages = messages.select { |m| m.item == item && m.user == interlocutor } + messages.select { |m| m.item == item && m.inbox.user == interlocutor }
-        conversation = { item: item, interlocutor: interlocutor, last_message: @messages.first } unless @messages == []
+        conversation = { item: item, interlocutor: interlocutor, last_message: @messages.first.content, created_at: @messages.first.created_at.strftime("%A, %d %b %Y %l:%M %p") } unless @messages == []
         @conversations << conversation unless conversation.nil?
       end
     end
@@ -29,6 +29,7 @@ class Api::V1::MessagesController < Api::V1::BaseController
     @item = Item.find(params[:item_id])
     @messages = @user.sent_messages.select { |m| m.item == @item && m.inbox.user == @interlocutor } + @user.received_messages.select { |m| m.item == @item && m.user == @interlocutor }
     @messages.sort_by! { |m| m.created_at }
+    @messages.each { |m| m.created_at = m.created_at.strftime("%A, %d %b %Y %l:%M %p") }
   end
 
   private

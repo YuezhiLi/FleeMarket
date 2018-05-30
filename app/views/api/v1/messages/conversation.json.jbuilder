@@ -1,6 +1,6 @@
 json.messages do
   json.array! @messages do |m|
-    json.created_at m.created_at
+    json.created_at m.created_at.strftime("%A, %d %b %Y %l:%M %p")
     json.content m.content
     json.sender m.user
   end
