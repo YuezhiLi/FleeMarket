@@ -24,6 +24,10 @@ class Api::V1::ItemsController < Api::V1::BaseController
     @related_items = @item.find_related_tags
   end
 
+  def fav_list
+    @items = User.favorite_items
+  end
+
   def my_items
     items = Item.all
     @items = items.select { |i| i.user == @current_user}
