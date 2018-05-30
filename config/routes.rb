@@ -6,8 +6,8 @@ Rails.application.routes.draw do
       post '/login', to: "login#login"
       get '/users/:id', to: 'users#show'
       post '/messages', to: 'messages#create'
-      get '/interlocutors', to: 'messages#interlocutors'
-      get '/conversation/:user_id', to: 'messages#conversation'
+      get '/conversations', to: 'messages#conversations'
+      get '/conversations/:item_id/:user_id', to: 'messages#conversation'
       resource :profile, only: [:show, :update]
       resources :detail_images, only: [:create, :destroy, :show]
       resources :items, only: [:index, :show, :create, :update, :destroy] do

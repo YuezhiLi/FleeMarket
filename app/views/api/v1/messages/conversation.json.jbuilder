@@ -8,3 +8,6 @@ end
 json.interlocutor do
   json.id @interlocutor.id
 end
+json.item do
+  json.id @item.id
+end

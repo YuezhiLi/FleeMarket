@@ -2,37 +2,38 @@ class Api::V1::MessagesController < Api::V1::BaseController
   def create
     @inbox = User.find(message_params[:user_id]).inbox
     @user = @current_user
-    @message = Message.create(user_id: @user.id, inbox_id: @inbox.id, content: message_params[:content])
-    render json: {
-      created_at: @message.created_at,
-      sender: @message.user,
-      content: @message.content
-    }
+    @message = Message.create(user_id: @user.id, inbox_id: @inbox.id, content: message_params[:content], item_id: message_params[:item_id])
+    render :show
   end
 
-  def interlocutors
-    @messages = @current_user.sent_messages + @current_user.received_messages
-    @messages.sort_by! { |m| m.created_at }.reverse!
-    @interlocutors = []
-    @messages.each do |m|
-      @interlocutors << m.user if m.inbox == @current_user.inbox
-      @interlocutors << m.inbox.user if m.user == @current_user
+  def conversations
+    @conversations = []
+    messages = @current_user.sent_messages + @current_user.received_messages
+    messages.sort_by! { |m| m.created_at }.reverse!
+    interlocutors = messages.map { |m| m.user == @current_user ? m.inbox.user : m.user }
+    interlocutors.uniq!
+    items = messages.map { |m| m.item }
+    items.uniq!
+    items.each do |item|
+      interlocutors.each do |interlocutor|
+        @messages = messages.select { |m| m.item == item && m.user == interlocutor } + messages.select { |m| m.item == item && m.inbox.user == interlocutor }
+        conversation = { item: item, interlocutor: interlocutor } unless @messages == []
+        @conversations << conversation unless conversation.nil?
+      end
     end
-    @interlocutors.uniq!
   end
 
   def conversation
     @user = @current_user
-    @messages = []
     @interlocutor = User.find(params[:user_id])
-    @messages += @user.sent_messages.select{ |m| m.inbox.user_id == params[:user_id].to_i }
-    @messages += @user.received_messages.select { |m| m.user_id == params[:user_id].to_i }
+    @item = Item.find(params[:item_id])
+    @messages = @user.sent_messages.select { |m| m.item == @item && m.inbox.user == @interlocutor } + @user.received_messages.select { |m| m.item == @item && m.user == @interlocutor }
     @messages.sort_by! { |m| m.created_at }
   end
 
   private
 
   def message_params
-    params.require(:message).permit(:user_id, :content)
+    params.require(:message).permit(:user_id, :content, :item_id)
   end
 end
