@@ -4,7 +4,8 @@ class Api::V1::MessagesController < Api::V1::BaseController
     @user = @current_user
     @message = Message.create(user_id: @user.id, inbox_id: @inbox.id, content: message_params[:content])
     render json: {
-      to: @message.inbox.user,
+      created_at: @message.created_at,
+      sender: @message.user,
       content: @message.content
     }
   end
