@@ -1,6 +1,5 @@
 json.message do
-  json.from @message.user
-  json.to @message.inbox.user
-  json.item @message.item
+  json.created_at @message.created_at
+  json.sender @message.user
   json.content @message.content
 end
