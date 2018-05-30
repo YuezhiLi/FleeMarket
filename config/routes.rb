@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       get 'search/:keyword', to: 'items#search'
       post '/login', to: "login#login"
       get '/fav_list', to: 'items#fav_list'
+      post '/fav_list/create', to: 'favorites#create'
       get '/users/:id', to: 'users#show'
       post '/messages', to: 'messages#create'
       get '/conversations', to: 'messages#conversations'
