@@ -13,6 +13,7 @@ json.item do
   json.title @item.title
   json.owner_id @item.user.id
   json.owner @item.user.nickName
+  json.price @item.price
   json.owner_avatar @item.user.avatarUrl
   json.cover_image @item.cover_image
 end
