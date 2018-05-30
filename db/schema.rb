@@ -15,21 +15,21 @@ ActiveRecord::Schema.define(version: 20180530092837) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "connections", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "item_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["item_id"], name: "index_connections_on_item_id"
-    t.index ["user_id"], name: "index_connections_on_user_id"
-  end
-
   create_table "detail_images", force: :cascade do |t|
     t.bigint "item_id"
     t.string "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["item_id"], name: "index_detail_images_on_item_id"
+  end
+
+  create_table "favorites", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "item_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_favorites_on_item_id"
+    t.index ["user_id"], name: "index_favorites_on_user_id"
   end
 
   create_table "inboxes", force: :cascade do |t|
@@ -103,9 +103,9 @@ ActiveRecord::Schema.define(version: 20180530092837) do
     t.string "authorization_token"
   end
 
-  add_foreign_key "connections", "items"
-  add_foreign_key "connections", "users"
   add_foreign_key "detail_images", "items"
+  add_foreign_key "favorites", "items"
+  add_foreign_key "favorites", "users"
   add_foreign_key "inboxes", "users"
   add_foreign_key "items", "users"
   add_foreign_key "messages", "inboxes"
