@@ -1,6 +1,6 @@
 class Api::V1::MessagesController < Api::V1::BaseController
   def create
-    @inbox = User.find(message_params[:user_id]).inbox
+    @inbox = Inbox.find_by_user_id(message_params[:user_id])
     @user = @current_user
     @message = Message.create(user_id: @user.id, inbox_id: @inbox.id, content: message_params[:content], item_id: message_params[:item_id])
     render :show
