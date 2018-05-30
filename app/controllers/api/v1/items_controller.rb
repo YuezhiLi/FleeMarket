@@ -53,6 +53,11 @@ class Api::V1::ItemsController < Api::V1::BaseController
     head :no_content
   end
 
+  def reactivate
+    @item = Item.find(params[:item_id])
+    @item.update(expired: false)
+  end
+
   private
 
   def set_item
