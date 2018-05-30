@@ -17,7 +17,11 @@ class Api::V1::FavoritesController < Api::V1::BaseController
   def destroy
     @favorite = Favorite.find(params[:id])
     @favorite.destroy
-    headers :no_content
+    # render json: {
+    #   type: "ok"
+    # }
+    # headers :no_content
+    head :no_content
   end
 
   private
