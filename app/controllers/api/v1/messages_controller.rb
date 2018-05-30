@@ -1,6 +1,6 @@
 class Api::V1::MessagesController < Api::V1::BaseController
   def create
-    @inbox = User.find(message_params[:user_id]).inbox
+    @inbox = Inbox.find_by_user_id(message_params[:user_id])
     @user = @current_user
     @message = Message.create(user_id: @user.id, inbox_id: @inbox.id, content: message_params[:content], item_id: message_params[:item_id])
     render :show
@@ -17,7 +17,7 @@ class Api::V1::MessagesController < Api::V1::BaseController
     items.each do |item|
       interlocutors.each do |interlocutor|
         @messages = messages.select { |m| m.item == item && m.user == interlocutor } + messages.select { |m| m.item == item && m.inbox.user == interlocutor }
-        conversation = { item: item, interlocutor: interlocutor } unless @messages == []
+        conversation = { item: item, interlocutor: interlocutor, last_message: @messages.first.content, created_at: @messages.first.created_at.strftime("%A, %d %b %Y %l:%M %p") } unless @messages == []
         @conversations << conversation unless conversation.nil?
       end
     end
@@ -29,6 +29,7 @@ class Api::V1::MessagesController < Api::V1::BaseController
     @item = Item.find(params[:item_id])
     @messages = @user.sent_messages.select { |m| m.item == @item && m.inbox.user == @interlocutor } + @user.received_messages.select { |m| m.item == @item && m.user == @interlocutor }
     @messages.sort_by! { |m| m.created_at }
+    @messages.each { |m| m.created_at = m.created_at.strftime("%A, %d %b %Y %l:%M %p") }
   end
 
   private
