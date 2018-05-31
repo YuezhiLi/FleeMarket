@@ -1,5 +1,6 @@
   json.item do
     json.id @item.id
+    json.expired @item.expired
     json.user_id @item.user_id
     json.title @item.title
     json.condition @item.condition
@@ -14,6 +15,7 @@
     json.owner @item.user
     json.items_from_the_same_owner @item.user.items
     json.updated_at @item.updated_at
+    json.expired @item.expired
 end
 
  json.related_items do

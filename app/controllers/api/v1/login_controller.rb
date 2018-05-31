@@ -1,5 +1,6 @@
 class Api::V1::LoginController < Api::V1::BaseController
   skip_before_action :authenticate_with_token, only: [:login]
+  skip_before_action :check_item_status, only: [:login]
   URL = "https://api.weixin.qq.com/sns/jscode2session".freeze
   def wechat_params
    {
@@ -29,11 +30,6 @@ class Api::V1::LoginController < Api::V1::BaseController
       avatarUrl: @user.avatarUrl,
       openId: @user.open_id
       }
-    # items = Item.all
-    # items.each do |i|
-    #   i.expired = true if DateTime.now - i.updated_at >= 30
-    #   i.save
-    # end
   end
 
   private
