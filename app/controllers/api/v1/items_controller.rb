@@ -3,21 +3,21 @@ class Api::V1::ItemsController < Api::V1::BaseController
   def index
     items = Item.all
     @items = items.select { |i| i.user != @current_user }
-    @items = @items.select { |i| i.city == params["city"] }  if params["city"].present?
-    @items = @items.select { |i| i.tag_list.include?(params["tag"]) } if params["tag"].present?
-    if params["keyword"].present?
+    @items = @items.select { |i| i.city == params[:city] }  if params[:city].present?
+    @items = @items.select { |i| i.tag_list.include?(params[:tag]) } if params[:tag].present?
+    if params[:keyword].present?
       items_temp = @items
       @items = []
-      @items += items_temp.select { |i| i.tag_list.include?(params["keyword"]) }
+      @items += items_temp.select { |i| i.tag_list.include?(params[:keyword]) }
       items_temp -= @items
       items_temp.each do |item|
-        @items << item if item.title.downcase.include?(params["keyword"].downcase)
+        @items << item if item.title.downcase.include?(params[:keyword].downcase)
       end
     end
-    @items = @items.sort_by! {|i| i.price } if params["method"] == "1"
-    @items = @items.sort_by! {|i| i.price }.reverse if params["method"] == '2'
-    @items = @items.sort_by! { |i| i.updated_at }.reverse if params["method"] == '3'
-    @items = @items.sort_by! { |i| i.updated_at } if params["method"] == '4'
+    @items = @items.sort_by! {|i| i.price } if params[:method] == "1"
+    @items = @items.sort_by! {|i| i.price }.reverse if params[:method] == '2'
+    @items = @items.sort_by! { |i| i.updated_at }.reverse if params[:method] == '3'
+    @items = @items.sort_by! { |i| i.updated_at } if params[:method] == '4'
   end
 
   def show
