@@ -1,8 +1,8 @@
 class Api::V1::ItemsController < Api::V1::BaseController
   before_action :set_item, only: [:show, :update, :destroy]
+  skip_before_action :authenticate_with_token, only: [:show]
   def index
-    items = Item.all
-    @items = items.select { |i| i.user != @current_user }
+    items = Item.where(expired: false)
     @items = @items.select { |i| i.city == params[:city] }  if params[:city].present?
     @items = @items.select { |i| i.tag_list.include?(params[:tag]) } if params[:tag].present?
     if params[:keyword].present?
@@ -28,11 +28,6 @@ class Api::V1::ItemsController < Api::V1::BaseController
     @items = User.favorite_items
   end
 
-  def my_items
-    items = Item.all
-    @items = items.select { |i| i.user == @current_user}
-  end
-
   def create
     @item = Item.new(item_params)
     @item.user = @current_user
@@ -40,7 +35,6 @@ class Api::V1::ItemsController < Api::V1::BaseController
       render :show
     else
       render_error
-      ends
     end
   end
 
