@@ -74,6 +74,6 @@ class Api::V1::ItemsController < Api::V1::BaseController
   end
 
   def item_params
-    params.require(:item).permit(:title, :condition, :cover_image, :description, :city, :price, :must_pick_up, :tag_list => [])
+    params.require(:item).permit(:title, :condition, :cover_image, :description, :city, :region, :price, :must_pick_up, :tag_list => [])
   end
 end
