@@ -5,6 +5,7 @@ json.profile do
   json.city @user.city
   json.avatarUrl @user.avatarUrl
   json.authorizationToken @user.authorization_token
+  json.my_items @user.items
 end
 
 json.active_items do
