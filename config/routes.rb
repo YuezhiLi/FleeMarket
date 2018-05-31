@@ -12,9 +12,7 @@ Rails.application.routes.draw do
       put 'reactivate/:item_id', to: 'items#reactivate'
       resource :profile, only: [:show, :update]
       resources :detail_images, only: [:create, :destroy, :show]
-      resources :items, only: [:index, :show, :create, :update, :destroy] do
-        resources :connections, only: [:show, :create, :destroy]
-      end
+      resources :items, only: [:index, :show, :create, :update, :destroy]
     end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

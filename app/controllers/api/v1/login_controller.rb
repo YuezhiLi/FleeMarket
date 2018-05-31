@@ -27,15 +27,13 @@ class Api::V1::LoginController < Api::V1::BaseController
       nickName: @user.nickName,
       city: @user.city,
       avatarUrl: @user.avatarUrl,
-      email: @user.email,
-      phoneNumber: @user.phoneNumber,
       openId: @user.open_id
       }
-    items = Item.all
-    items.each do |i|
-      i.expired = true if DateTime.now - i.updated_at >= 30
-      i.save
-    end
+    # items = Item.all
+    # items.each do |i|
+    #   i.expired = true if DateTime.now - i.updated_at >= 30
+    #   i.save
+    # end
   end
 
   private
