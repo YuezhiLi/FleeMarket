@@ -33,11 +33,7 @@ class Api::V1::BaseController < ActionController::Base
     items = Item.all
     items.each do |i|
       lapse = Time.now - i.updated_at
-      if lapse / 86400 >= 30
-        i.expired = true
-      else
-        i.expired = false
-      end
+      i.expired = true if lapse / 86400 >= 30
       i.save
     end
   end
