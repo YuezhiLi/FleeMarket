@@ -7,6 +7,7 @@
     json.detail_images @item.detail_images
     json.description @item.description
     json.city @item.city
+    json.region @item.region
     json.price @item.price
     json.tag_list @item.tag_list
     json.must_pick_up @item.must_pick_up
