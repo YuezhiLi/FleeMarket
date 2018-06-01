@@ -12,6 +12,7 @@ class Api::V1::ItemsController < Api::V1::BaseController
       items_temp -= @items
       items_temp.each do |item|
         @items << item if item.title.downcase.include?(params[:keyword].downcase)
+        @items << item if item.city.downcase == params[:keyword].downcase
       end
     end
     @items = @items.sort_by {|i| i.price } if params[:method] == "1"
