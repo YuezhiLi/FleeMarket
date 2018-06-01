@@ -2,7 +2,7 @@ class Api::V1::ItemsController < Api::V1::BaseController
   before_action :set_item, only: [:show, :update, :destroy]
   skip_before_action :authenticate_with_token, only: [:show]
   def index
-    items = Item.where(expired: false)
+    @items = Item.where(expired: false)
     @items = @items.select { |i| i.city == params[:city] }  if params[:city].present?
     @items = @items.select { |i| i.tag_list.include?(params[:tag]) } if params[:tag].present?
     if params[:keyword].present?
@@ -14,10 +14,10 @@ class Api::V1::ItemsController < Api::V1::BaseController
         @items << item if item.title.downcase.include?(params[:keyword].downcase)
       end
     end
-    @items = @items.sort_by! {|i| i.price } if params[:method] == "1"
-    @items = @items.sort_by! {|i| i.price }.reverse if params[:method] == '2'
-    @items = @items.sort_by! { |i| i.updated_at }.reverse if params[:method] == '3'
-    @items = @items.sort_by! { |i| i.updated_at } if params[:method] == '4'
+    @items = @items.sort_by {|i| i.price } if params[:method] == "1"
+    @items = @items.sort_by {|i| i.price }.reverse if params[:method] == '2'
+    @items = @items.sort_by { |i| i.updated_at }.reverse if params[:method] == '3'
+    @items = @items.sort_by { |i| i.updated_at } if params[:method] == '4'
   end
 
   def show
