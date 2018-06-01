@@ -4,7 +4,7 @@ class Api::V1::ItemsController < Api::V1::BaseController
   def index
     @items = Item.where(expired: false)
     @items = @items.select { |i| i.city == params[:city] }  if params[:city].present?
-    @items = @items.select { |i| i.tag_list.include?(params[:tag]) } if params[:tag].present?
+    @items = @items.select { |i| i.tag_list.include?(params[:tag].downcase) } if params[:tag].present?
     if params[:keyword].present?
       items_temp = @items
       @items = []
