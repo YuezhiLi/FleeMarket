@@ -13,6 +13,7 @@ class Api::V1::ItemsController < Api::V1::BaseController
         @items << item if item.title.downcase.include?(params[:keyword].downcase)
       end
     end
+    @items = Kaminari.paginate_array(@items).page(params[:page]).per(10)
     @items = @items.sort_by {|i| i.price } if params[:method] == "1"
     @items = @items.sort_by {|i| i.price }.reverse if params[:method] == '2'
     @items = @items.sort_by { |i| i.updated_at }.reverse if params[:method] == '3'
