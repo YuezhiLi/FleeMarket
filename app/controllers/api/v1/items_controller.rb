@@ -1,18 +1,16 @@
 class Api::V1::ItemsController < Api::V1::BaseController
   before_action :set_item, only: [:show, :update, :destroy]
   skip_before_action :authenticate_with_token, only: [:show]
+  skip_before_action :check_item_status, only: [:create, :updated, :destroy, :reactivate]
   def index
     @items = Item.where(expired: false)
-    @items = @items.select { |i| i.city == params[:city] }  if params[:city].present?
+    @items = Item.where(expired: false, city: params[:city])  if params[:city].present?
     @items = @items.select { |i| i.tag_list.include?(params[:tag]) } if params[:tag].present?
     if params[:keyword].present?
       items_temp = @items
       @items = []
-      @items += items_temp.select { |i| i.tag_list.include?(params[:keyword]) }
-      items_temp -= @items
       items_temp.each do |item|
         @items << item if item.title.downcase.include?(params[:keyword].downcase)
-        @items << item if item.city.downcase == params[:keyword].downcase
       end
     end
     @items = @items.sort_by {|i| i.price } if params[:method] == "1"
