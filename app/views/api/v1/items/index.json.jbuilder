@@ -13,3 +13,8 @@ json.items do
     json.updated_at item.updated_at
   end
 end
+
+json.last_page do
+  json.last_page @last_page
+end
+

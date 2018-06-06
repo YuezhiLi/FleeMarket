@@ -3,17 +3,12 @@ class Api::V1::ItemsController < Api::V1::BaseController
   skip_before_action :authenticate_with_token, only: [:show]
   skip_before_action :check_item_status, only: [:create, :updated, :destroy, :reactivate]
   def index
-    @items = Item.where(expired: false)
-    @items = Item.where(expired: false, city: params[:city])  if params[:city].present?
-    @items = @items.select { |i| i.tag_list.include?(params[:tag]) } if params[:tag].present?
-    if params[:keyword].present?
-      items_temp = @items
-      @items = []
-      items_temp.each do |item|
-        @items << item if item.title.downcase.include?(params[:keyword].downcase)
-      end
-    end
-    @items = Kaminari.paginate_array(@items).page(params[:page]).per(10)
+    items = Item.where(expired: false)
+    items = Item.where(expired: false, city: params[:city])  if params[:city].present?
+    items = items.select { |i| i.tag_list.include?(params[:tag]) } if params[:tag].present?
+    items = items.select { |i| i.title.downcase.include?(params[:keyword].downcase)} if params[:keyword].present?
+    @items = Kaminari.paginate_array(items).page(params[:page]).per(10)
+    @last_page = Kaminari.paginate_array(items).page(params[:page]).per(10).last_page?
     @items = @items.sort_by {|i| i.price } if params[:method] == "1"
     @items = @items.sort_by {|i| i.price }.reverse if params[:method] == '2'
     @items = @items.sort_by { |i| i.updated_at }.reverse if params[:method] == '3'
