@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180531031716) do
+ActiveRecord::Schema.define(version: 20180606151952) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,6 +67,16 @@ ActiveRecord::Schema.define(version: 20180531031716) do
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
+  create_table "reports", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "item_id"
+    t.text "cause"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_reports_on_item_id"
+    t.index ["user_id"], name: "index_reports_on_user_id"
+  end
+
   create_table "taggings", force: :cascade do |t|
     t.bigint "tag_id"
     t.string "taggable_type"
@@ -112,4 +122,6 @@ ActiveRecord::Schema.define(version: 20180531031716) do
   add_foreign_key "messages", "inboxes"
   add_foreign_key "messages", "items"
   add_foreign_key "messages", "users"
+  add_foreign_key "reports", "items"
+  add_foreign_key "reports", "users"
 end
