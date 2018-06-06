@@ -19,7 +19,12 @@ class Api::V1::ItemsController < Api::V1::BaseController
       tags = Item.all_tags.map { |t| t.name }
     end
     sql_query = [sql_query] + params_array
-    items = Item.where(sql_query).tagged_with(tags, :any => true)
+    case params[:method]
+    when 1 then order = "price ASC"
+    when 2 then order = "price DESC"
+    when 3 then order = "updated_at DESC"
+    end
+    items = Item.order(order).where(sql_query).tagged_with(tags, :any => true)
     # items = Item.where(expired: false)
     # items = Item.where(expired: false, city: params[:city])  if params[:city].present?
     # items = items.select { |i| i.tag_list.include?(params[:tag]) } if params[:tag].present?
