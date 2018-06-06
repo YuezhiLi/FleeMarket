@@ -3,14 +3,34 @@ class Api::V1::ItemsController < Api::V1::BaseController
   skip_before_action :authenticate_with_token, only: [:show]
   skip_before_action :check_item_status, only: [:create, :updated, :destroy, :reactivate]
   def index
-    items = Item.where(expired: false)
-    items = Item.where(expired: false, city: params[:city])  if params[:city].present?
-    items = items.select { |i| i.tag_list.include?(params[:tag]) } if params[:tag].present?
-    items = items.select { |i| i.title.downcase.include?(params[:keyword].downcase)} if params[:keyword].present?
-    items = items.sort_by {|i| i.price } if params[:method] == "1"
-    items = items.sort_by {|i| i.price }.reverse if params[:method] == '2'
-    items = items.sort_by { |i| i.updated_at }.reverse if params[:method] == '3'
-    items = items.sort_by { |i| i.updated_at } if params[:method] == '4'
+    sql_query = "expired = ?"
+    params_array = [false]
+    if params[:city].present?
+      sql_query += " AND city = ?"
+      params_array << params[:city]
+    end
+    if params[:keyword].present?
+      sql_query += " AND title ILIKE ?"
+      params_array << "%#{params[:keyword]}%"
+    end
+    if params[:tag].present?
+      tags = [params[:tag]]
+    else
+      tags = Item.all_tags.map { |t| t.name }
+    end
+    sql_query = [sql_query] + params_array
+    order = "price ASC" if params[:method] == "1"
+    order = "price DESC" if params[:method] == "2"
+    order = "updated_at DESC" if params[:method] == "3"
+    items = Item.order(order).where(sql_query).tagged_with(tags, :any => true)
+    # items = Item.where(expired: false)
+    # items = Item.where(expired: false, city: params[:city])  if params[:city].present?
+    # items = items.select { |i| i.tag_list.include?(params[:tag]) } if params[:tag].present?
+    # items = items.select { |i| i.title.downcase.include?(params[:keyword].downcase)} if params[:keyword].present?
+    # items = items.sort_by {|i| i.price } if params[:method] == "1"
+    # items = items.sort_by {|i| i.price }.reverse if params[:method] == '2'
+    # items = items.sort_by { |i| i.updated_at }.reverse if params[:method] == '3'
+    # items = items.sort_by { |i| i.updated_at } if params[:method] == '4'
     if params[:page].present?
       @items = Kaminari.paginate_array(items).page(params[:page]).per(10)
       last_page = Kaminari.paginate_array(items).page(params[:page]).per(10).last_page?
