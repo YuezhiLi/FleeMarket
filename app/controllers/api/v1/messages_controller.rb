@@ -21,8 +21,10 @@ class Api::V1::MessagesController < Api::V1::BaseController
         conversations << conversation unless conversation.nil?
       end
     end
-    @selling_conversations = conversations.select { |c| c[:item].user_id == @current_user.id }
-    @buying_conversations = conversations.select { |c| c[:item].user_id != @current_user.id }
+    @selling_conversations = conversations
+    @buying_conversations = []
+    # @selling_conversations = conversations.select { |c| c[:item].user_id == @current_user.id }
+    # @buying_conversations = conversations.select { |c| c[:item].user_id != @current_user.id }
   end
 
   def conversation

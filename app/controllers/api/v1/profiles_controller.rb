@@ -1,8 +1,9 @@
 class Api::V1::ProfilesController < Api::V1::BaseController
   def show
     @user = @current_user
-    @active_items = @user.items.select { |i| i.expired == false }
-    @expired_items = @user.items.select { |i| i.expired == true }
+    items = @user.items.sort_by { |i| i.updated_at }.reverse
+    @active_items = items.select { |i| i.expired == false }
+    @expired_items = items.select { |i| i.expired == true }
   end
 
   def update
